@@ -1,15 +1,27 @@
 Brooklyn Visualization Demo
 ===========================
 
+Connects to the Brooklyn REST API to obtain a JSON object containing the full tree of all deployed applications and
+renders them using various visualization techniques. The Brooklyn console is assumed to be running on http://localhost:8081/ so
+you will need to edit the individual files to change this.
+
+## Bubble Tree
+
 Uses **Radial Bubble Tree Visualization** code (from https://github.com/okfn/bubbletree with patches applied) to display Brooklyn
-entities. Connects to the Brooklyn REST API to obtain a JSON object containing the full tree of all deployed applications and rendes them
-as bubbles. The bubbles are sized according to the total number of child entities and coloured depending on the package name of
+entities as bubbles. The bubbles are sized according to the total number of child entities and coloured depending on the package name of
 the entity type.
 
-## Usage
+## D3.js
 
-Open the `index.html` file in a browser to view the Brooklyn entity tree. If you are running Brooklyn on a port other than
-8081 you will need to modify the `brooklyn.js` file.
+Displays a **Tree Map** and a **Radial Sunburst** rendering, using the D3 JavaScript library. Entities are coloured according to
+type.
+
+## TODO
+
+- MoireGraph
+- JSPlumb
+
+
 
 Copyright 2013 by Andrew Kennedy
 
