@@ -1,6 +1,8 @@
-var data = { label: 'Brooklyn', amount: 1, children: [] };
 var username = 'admin';
 var password = 'password';
+
+var data = { label: 'Brooklyn', amount: 1, children: [] };
+
 $.ajax({
     username: username,
     password: password,
@@ -13,15 +15,21 @@ $.ajax({
         xhr.setRequestHeader("Authorization", "Basic " + base64data);
     },
     success: function(result) {
-        data.children.push(entity(result[0].id, result[0].name, result[0].type, result[0].children));
+        result.forEach(function(application) {
+            data.children.push(entity(application.id, application.name, application.type, application.children));
+        });
         new BubbleTree({
             data: data,
-            container: '.bubbletree'
-        })
+            container: '.bubbletree',
+            minRadiusHideLabels: 0,
+            cutLabelsAt: 100,
+            bubbleType: 'plain'
+        });
     }
 });
+
 function entity(id, name, type, nodes) {
-    var node = { id: id, label: name, amount: 1, children: [] };
+    var node = { id: id, label: name, amount: 1, taxonomy: 'entity', name: type, children: [] };
     if (type.indexOf("brooklyn.entity.basic") == 0) {
         node.color = "#006622";
     } else if (type.indexOf("brooklyn.entity") == 0) {
