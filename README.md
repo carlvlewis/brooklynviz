@@ -13,15 +13,13 @@ the entity type.
 
 ## D3.js
 
-Displays a **Tree Map** and a **Radial Sunburst** rendering, using the D3 JavaScript library. Entities are coloured according to
+Displays **Tree Map**, **Radial Sunburst** and **Packed Circles** renderings, using the D3 JavaScript library. Entities are coloured according to
 type.
 
 ## TODO
 
 - MoireGraph
 - JSPlumb
-
-
 
 Copyright 2013 by Andrew Kennedy
 

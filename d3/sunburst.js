@@ -11,18 +11,15 @@ xhr.get(function(error, json) {
 
 var width = 1000, height = 800,
     radius = Math.min(width, height) / 2,
+    x = d3.scale.linear().range([0, 2 * Math.PI]),
+    y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]),
+    padding = 5,
     color = d3.scale.category20c();
 
 var partition = d3.layout.partition()
     .sort(null)
     .size([2 * Math.PI, radius * radius])
-    .value(function(d) { return 1; });
-
-//Stash the old values for transition.
-function stash(d) {
-    d.x0 = d.x;
-    d.dx0 = d.dx;
-}
+    .value(function(d) { return sizeof(d); });
 
 function display(json) {
     var svg = d3.select("body")
@@ -38,7 +35,7 @@ function display(json) {
         .innerRadius(function(d) { return Math.sqrt(d.y); })
         .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
-    var path = svg.datum(json[0])
+    svg.datum(json[0])
         .selectAll("path")
         .data(partition.nodes)
         .enter()
@@ -47,10 +44,9 @@ function display(json) {
         .attr("d", arc)
         .style("stroke", "#fff")
         .style("fill", function(d) { return color(d.type); })
-        .style("fill-rule", "evenodd")
-        .each(stash);
+        .style("fill-rule", "evenodd");
 
-    var labels = svg.selectAll("text.label")
+    svg.selectAll("text.label")
         .data(partition.nodes)
         .enter().append("text")
         .attr("class", "label")
@@ -59,4 +55,14 @@ function display(json) {
         .text(function(d, i) { return d.name;} );
 
     d3.select(self.frameElement).style("height", height + "px");
+}
+
+function sizeof(d) {
+    var size = 1;
+    if (d.children) {
+        d.children.forEach(function(child) {
+            size += sizeof(child);
+        });
+    }
+    return size;
 }
